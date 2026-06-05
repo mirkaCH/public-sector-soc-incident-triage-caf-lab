@@ -15,6 +15,7 @@ This project also includes mapping to frameworks commonly relevant to UK public 
 NCSC Cyber Assessment Framework (CAF)
 NIST Cybersecurity Framework (CSF)
 MITRE ATT&CK
+
 2. Scenario Summary
 
 A fictional local council receives a security alert indicating repeated failed logon attempts against a privileged account, followed by a successful remote logon and suspicious PowerShell execution.
@@ -30,7 +31,9 @@ Detection engineering basics	SPL and KQL-style queries
 Threat mapping	MITRE ATT&CK mapping
 Public sector alignment	NCSC CAF and NIST CSF mapping
 Reporting	SOC incident report and executive summary
-4. Repository Structure
+
+5. Repository Structure
+   
 public-sector-soc-incident-triage-caf-lab/
 ├── README.md
 ├── scenario/
@@ -61,7 +64,8 @@ public-sector-soc-incident-triage-caf-lab/
     ├── ncsc-caf-mapping.png
     ├── nist-csf-mapping.png
     └── detection-queries.png
-5. Investigation Workflow
+    
+7. Investigation Workflow
 Alert received
 → Ticket triage
 → Evidence review
@@ -72,10 +76,9 @@ Alert received
 → Risk assessment
 → Incident report
 → Escalation recommendation
-6. Key Findings
 
+9. Key Findings
 The simulated evidence indicates:
-
 Repeated failed logon attempts against a privileged account.
 Successful remote logon from the same suspicious source IP.
 Special privileges assigned to the account after logon.
@@ -87,63 +90,40 @@ The activity should be treated as suspicious and escalated for further investiga
 7. Screenshots
 Ticket Triage Summary
 
-
-
-
 Incident Timeline
-
-
-
 
 Suspicious PowerShell Evidence
 
-
-
-
 IOC Summary
-
-
-
 
 MITRE ATT&CK Mapping
 
-
-
-
 NCSC CAF Mapping
-
-
-
 
 NIST CSF Mapping
 
-
-
-
 Detection Query Evidence
-
-
-
 
 8. Detection Queries
 
 Detection logic is provided in:
 
 queries/splunk-queries.spl
+
 queries/kql-queries.kql
 
 The queries cover:
 
-Failed logon bursts.
+Failed logon bursts
+
 Successful RDP logons.
 Privileged account logons.
 Suspicious PowerShell execution.
 Reconnaissance command execution.
 Timeline reconstruction.
+
 9. Framework Mapping
-
 This project includes mapping to:
-
 MITRE ATT&CK
 NCSC Cyber Assessment Framework
 NIST Cybersecurity Framework
