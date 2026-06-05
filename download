@@ -1,0 +1,47 @@
+# Executive Summary
+
+## Incident Summary
+
+A suspicious authentication and endpoint activity pattern was identified in a simulated UK public sector environment.
+
+The activity involved repeated failed logon attempts against a privileged service account, followed by a successful RDP logon from the same external IP address. After the successful logon, suspicious activity was observed, including special privileges assigned to the account, encoded PowerShell execution, and reconnaissance commands.
+
+---
+
+## Business Risk
+
+The incident presents a high risk because:
+
+- A privileged account was involved.
+- Remote access was successful.
+- Suspicious commands were executed after logon.
+- The activity occurred in a public sector context.
+- The behaviour may indicate account compromise.
+
+---
+
+## Key Findings
+
+- Multiple failed logons were observed against `svc_admin_backup`.
+- A successful RDP logon occurred from `185.203.118.44`.
+- Special privileges were assigned to the account.
+- Encoded PowerShell was executed.
+- Discovery commands were run to enumerate users, host details, groups, and privileges.
+
+---
+
+## Recommended Management Actions
+
+1. Confirm whether the activity was authorised.
+2. Temporarily restrict or disable the affected account.
+3. Reset credentials and review privileged access.
+4. Investigate the affected endpoint.
+5. Review RDP exposure and remote access controls.
+6. Improve monitoring for authentication anomalies and PowerShell misuse.
+7. Align lessons learned with NCSC CAF and NIST CSF improvement actions.
+
+---
+
+## Overall Assessment
+
+The incident should be treated as a suspected privileged account compromise and escalated for further investigation.

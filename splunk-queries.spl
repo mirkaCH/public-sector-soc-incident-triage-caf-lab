@@ -1,0 +1,77 @@
+# NIST Cybersecurity Framework Mapping
+
+## Overview
+
+This section maps the incident to the NIST Cybersecurity Framework core functions: Identify, Protect, Detect, Respond, and Recover.
+
+---
+
+## Identify
+
+The organisation must understand critical assets, privileged accounts, authentication flows, and exposure of remote access services.
+
+Improvement actions:
+
+- Maintain asset inventory.
+- Maintain privileged account inventory.
+- Identify systems exposed to remote access.
+- Document account ownership and business justification.
+
+---
+
+## Protect
+
+Protective controls should reduce the likelihood of account compromise and unauthorised remote access.
+
+Improvement actions:
+
+- Enforce MFA.
+- Restrict RDP access.
+- Apply least privilege.
+- Disable interactive logon for service accounts.
+- Strengthen password and lockout policies.
+- Harden PowerShell use.
+
+---
+
+## Detect
+
+Detection logic is required to identify suspicious authentication patterns and post-logon activity.
+
+Improvement actions:
+
+- Monitor failed logon bursts.
+- Alert on successful logon after repeated failures.
+- Alert on privileged RDP logons.
+- Detect encoded PowerShell execution.
+- Detect reconnaissance commands.
+
+---
+
+## Respond
+
+The organisation must contain the account, investigate the endpoint, and escalate the incident.
+
+Improvement actions:
+
+- Disable or reset affected account.
+- Revoke sessions.
+- Block suspicious IP if confirmed malicious.
+- Escalate to Tier 2 SOC / IR.
+- Preserve logs and endpoint evidence.
+- Notify stakeholders according to procedure.
+
+---
+
+## Recover
+
+Recovery should include restoring trust, improving controls, and documenting lessons learned.
+
+Improvement actions:
+
+- Confirm account security.
+- Validate no persistence or lateral movement.
+- Re-enable account only after review.
+- Update SIEM detection rules.
+- Update playbooks.
+- Conduct lessons learned review.

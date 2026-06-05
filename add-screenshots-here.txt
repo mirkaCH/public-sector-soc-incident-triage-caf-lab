@@ -1,0 +1,127 @@
+# SOC Incident Report
+
+**Report Title:** Suspicious Privileged Account Activity in Public Sector Environment  
+**Ticket ID:** SOC-PS-2026-001  
+**Analyst:** Miroslawa Chatys  
+**Date:** 2026-06-04  
+**Environment:** Simulated public sector Windows environment  
+**Severity:** High  
+**Status:** Escalated  
+
+---
+
+## 1. Executive Summary
+
+A suspicious authentication and endpoint activity pattern was identified on host `NBC-WIN-034`. The activity involved repeated failed logon attempts against the privileged account `svc_admin_backup`, followed by a successful RDP logon from the same external IP address. Shortly after the successful logon, special privileges were assigned and suspicious commands were executed, including encoded PowerShell and reconnaissance commands.
+
+The activity is assessed as suspicious and consistent with possible privileged account compromise. Escalation to Tier 2 SOC / Incident Response is recommended.
+
+---
+
+## 2. Incident Overview
+
+| Field | Value |
+|---|---|
+| Affected Host | NBC-WIN-034 |
+| Affected Account | svc_admin_backup |
+| Suspicious Source IP | 185.203.118.44 |
+| First Observed | 2026-06-04 09:12:04 UTC |
+| Last Observed | 2026-06-04 09:42:16 UTC |
+| Main Event IDs | 4625, 4624, 4672, 4688, 4634 |
+| Severity | High |
+| Escalation | Required |
+
+---
+
+## 3. Evidence Reviewed
+
+Key evidence included multiple Event ID 4625 failed logons, Event ID 4624 successful RDP logon, Event ID 4672 special privileges assigned, Event ID 4688 process creation events, suspicious encoded PowerShell, and reconnaissance commands such as `whoami`, `hostname`, `net user`, and `net localgroup administrators`.
+
+---
+
+## 4. Key Findings
+
+### Finding 1 — Repeated Failed Logons
+
+Multiple failed logons were observed from `185.203.118.44` against `svc_admin_backup`. This may indicate brute-force, password guessing, or password spraying.
+
+### Finding 2 — Successful RDP Logon
+
+A successful RDP logon occurred shortly after the failed attempts from the same source IP. This is suspicious because it may indicate that authentication was eventually successful.
+
+### Finding 3 — Privileged Access
+
+Event ID 4672 showed special privileges assigned to the account after logon. This increases the severity because the account may have administrative or sensitive access.
+
+### Finding 4 — Suspicious PowerShell Execution
+
+PowerShell was executed using:
+
+```text
+powershell.exe -NoProfile -ExecutionPolicy Bypass -enc SQBFAFgA
+```
+
+Encoded PowerShell and execution policy bypass are commonly associated with suspicious or malicious activity.
+
+### Finding 5 — Reconnaissance Activity
+
+Commands such as `whoami`, `hostname`, `net user`, `net localgroup administrators`, and `whoami /priv` were observed. These commands are commonly used during post-compromise discovery.
+
+---
+
+## 5. MITRE ATT&CK Mapping
+
+| Technique | ID | Evidence |
+|---|---:|---|
+| Brute Force | T1110 | Repeated failed logons |
+| Valid Accounts | T1078 | Successful logon using privileged account |
+| Remote Services: RDP | T1021.001 | Logon Type 10 |
+| PowerShell | T1059.001 | Suspicious PowerShell execution |
+| Obfuscated Files or Information | T1027 | Encoded command |
+| System Owner/User Discovery | T1033 | `whoami` |
+| Account Discovery | T1087 | `net user` |
+| Permission Groups Discovery | T1069 | `net localgroup administrators` |
+
+---
+
+## 6. Recommended Actions
+
+### Immediate Containment
+
+1. Disable or restrict `svc_admin_backup`.
+2. Reset credentials for the affected account.
+3. Revoke active sessions.
+4. Block or investigate `185.203.118.44`.
+5. Isolate or investigate `NBC-WIN-034`.
+
+### Investigation
+
+1. Review additional logs around the time window.
+2. Search for the same source IP across other hosts.
+3. Review privileged group membership changes.
+4. Check for persistence mechanisms.
+5. Review PowerShell logs and EDR telemetry.
+6. Validate whether the activity was authorised.
+
+### Long-Term Improvements
+
+1. Enforce MFA for privileged accounts.
+2. Restrict RDP to approved networks.
+3. Disable interactive logon for service accounts where possible.
+4. Improve SIEM correlation rules.
+5. Add detection for encoded PowerShell and execution policy bypass.
+6. Review privileged access management processes.
+
+---
+
+## 7. NCSC CAF Relevance
+
+The incident relates to CAF objectives A, B, C, and D: managing security risk, protecting against cyber attack, detecting cyber security events, and minimising the impact of incidents.
+
+---
+
+## 8. Analyst Conclusion
+
+The evidence supports escalation as a suspected privileged account compromise. The combination of repeated failed logons, successful RDP access, privileged logon, encoded PowerShell execution, and reconnaissance commands indicates suspicious post-authentication activity.
+
+The incident should be escalated to Tier 2 SOC / Incident Response for containment, endpoint investigation, and wider environment review.
