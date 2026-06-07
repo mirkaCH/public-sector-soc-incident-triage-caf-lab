@@ -1,0 +1,13 @@
+TimeCreated,EventID,AccountName,SourceIP,Host,LogonType,ProcessName,CommandLine,Description,Severity
+2026-06-04 09:12:03,4625,svc_admin_backup,185.203.118.44,NBC-WIN-034,10,,,Failed logon attempt against privileged service account,Medium
+2026-06-04 09:13:11,4625,svc_admin_backup,185.203.118.44,NBC-WIN-034,10,,,Failed logon attempt against privileged service account,Medium
+2026-06-04 09:14:27,4625,svc_admin_backup,185.203.118.44,NBC-WIN-034,10,,,Failed logon attempt against privileged service account,Medium
+2026-06-04 09:15:42,4625,svc_admin_backup,185.203.118.44,NBC-WIN-034,10,,,Failed logon attempt against privileged service account,Medium
+2026-06-04 09:16:58,4625,svc_admin_backup,185.203.118.44,NBC-WIN-034,10,,,Failed logon attempt against privileged service account,Medium
+2026-06-04 09:18:21,4624,svc_admin_backup,185.203.118.44,NBC-WIN-034,10,,,Successful RDP logon after multiple failed attempts,High
+2026-06-04 09:19:06,4672,svc_admin_backup,185.203.118.44,NBC-WIN-034,,,,Special privileges assigned to new logon,High
+2026-06-04 09:21:44,4688,svc_admin_backup,185.203.118.44,NBC-WIN-034,,powershell.exe,"powershell.exe -NoProfile -ExecutionPolicy Bypass -EncodedCommand SQBFAFgAIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAKQA=",Encoded PowerShell execution observed,High
+2026-06-04 09:22:10,4688,svc_admin_backup,185.203.118.44,NBC-WIN-034,,cmd.exe,"cmd.exe /c whoami /groups",Reconnaissance command executed,High
+2026-06-04 09:23:18,4688,svc_admin_backup,185.203.118.44,NBC-WIN-034,,cmd.exe,"cmd.exe /c net user",Local user enumeration command executed,High
+2026-06-04 09:24:31,4688,svc_admin_backup,185.203.118.44,NBC-WIN-034,,cmd.exe,"cmd.exe /c ipconfig /all",Network reconnaissance command executed,Medium
+2026-06-04 09:42:00,4634,svc_admin_backup,185.203.118.44,NBC-WIN-034,10,,,Logoff event after suspicious session,Medium
