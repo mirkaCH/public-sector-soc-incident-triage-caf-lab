@@ -49,4 +49,133 @@ index=windows sourcetype=WinEventLog:Security EventCode=4688
 index=windows sourcetype=WinEventLog:Security host="NBC-WIN-034" Account_Name="svc_admin_backup"
 | table _time, EventCode, host, Account_Name, Source_Network_Address, New_Process_Name, Process_Command_Line
 | sort _time
+```---
+
+## Query Output Evidence
+
+This section was added after community feedback to show the query logic together with supporting output from the simulated dataset.
+
+The project uses a simulated CSV dataset created for learning and portfolio practice. It is not based on real company data or confidential logs.
+
+### Dataset Used
+
+Dataset file: `simulated-security-events.csv`
+
+The dataset contains fictional Windows-style security events used for SOC triage practice.
+
+Included Event IDs:
+
+- `4625` - Failed logon attempts
+- `4624` - Successful RDP logon
+- `4672` - Special privileges assigned
+- `4688` - Process creation
+- `4634` - Logoff
+
+### Failed Logons - Event ID 4625
+
+Command-line validation:
+
+```bash
+grep "4625" simulated-security-events.csv
+
 ```
+
+Observed output:
+
+```text
+2026-06-04 09:12:03,4625,svc_admin_backup,185.203.118.44,NBC-WIN-034,10,,,Failed logon attempt against privileged service account,Medium
+2026-06-04 09:13:11,4625,svc_admin_backup,185.203.118.44,NBC-WIN-034,10,,,Failed logon attempt against privileged service account,Medium
+2026-06-04 09:14:27,4625,svc_admin_backup,185.203.118.44,NBC-WIN-034,10,,,Failed logon attempt against privileged service account,Medium
+2026-06-04 09:15:42,4625,svc_admin_backup,185.203.118.44,NBC-WIN-034,10,,,Failed logon attempt against privileged service account,Medium
+2026-06-04 09:16:58,4625,svc_admin_backup,185.203.118.44,NBC-WIN-034,10,,,Failed logon attempt against privileged service account,Medium
+```
+
+Analyst note:
+
+Five failed logon attempts were observed between `09:12` and `09:16 UTC` against the privileged account `svc_admin_backup` from source IP `185.203.118.44` targeting host `NBC-WIN-034`.
+
+### Successful RDP Logon - Event ID 4624
+
+Command-line validation:
+
+```bash
+grep "4624" simulated-security-events.csv
+```
+
+Observed output:
+
+```text
+2026-06-04 09:18:21,4624,svc_admin_backup,185.203.118.44,NBC-WIN-034,10,,,Successful RDP logon after multiple failed attempts,High
+```
+
+Analyst note:
+
+A successful RDP logon occurred at `09:18 UTC` using the same account, same source IP, and same host.
+
+### Special Privileges Assigned - Event ID 4672
+
+Command-line validation:
+
+```bash
+grep "4672" simulated-security-events.csv
+```
+
+Observed output:
+
+```text
+2026-06-04 09:19:06,4672,svc_admin_backup,185.203.118.44,NBC-WIN-034,,,,Special privileges assigned to new logon,High
+```
+
+Analyst note:
+
+Special privileges were assigned shortly after the successful RDP logon.
+
+### Encoded PowerShell Execution - Event ID 4688
+
+Command-line validation:
+
+```bash
+grep -i "EncodedCommand" simulated-security-events.csv
+```
+
+Observed output:
+
+```text
+2026-06-04 09:21:44,4688,svc_admin_backup,185.203.118.44,NBC-WIN-034,,powershell.exe,"powershell.exe -NoProfile -ExecutionPolicy Bypass -EncodedCommand SQBFAFgAIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAKQA=",Encoded PowerShell execution observed,High
+```
+
+Analyst note:
+
+PowerShell was executed with the `EncodedCommand` parameter after the successful RDP logon. This is suspicious because encoded PowerShell can be used to hide command activity.
+
+### Reconnaissance Commands
+
+Command-line validation:
+
+```bash
+grep -i "whoami\|net user\|ipconfig" simulated-security-events.csv
+```
+
+Observed output:
+
+```text
+2026-06-04 09:22:10,4688,svc_admin_backup,185.203.118.44,NBC-WIN-034,,cmd.exe,"cmd.exe /c whoami /groups",Reconnaissance command executed,High
+2026-06-04 09:23:18,4688,svc_admin_backup,185.203.118.44,NBC-WIN-034,,cmd.exe,"cmd.exe /c net user",Local user enumeration command executed,High
+2026-06-04 09:24:31,4688,svc_admin_backup,185.203.118.44,NBC-WIN-034,,cmd.exe,"cmd.exe /c ipconfig /all",Network reconnaissance command executed,Medium
+```
+
+Analyst note:
+
+Reconnaissance commands were observed after the successful privileged logon. This supports escalation because the activity may indicate post-authentication discovery.
+
+### Summary of Query Evidence
+
+The evidence shows the following sequence:
+
+1. Five failed logon attempts against `svc_admin_backup`
+2. Successful RDP logon from the same source IP
+3. Special privileges assigned to the session
+4. Encoded PowerShell execution
+5. Reconnaissance commands after logon
+
+This sequence supports a High Severity decision and escalation to Tier 2 SOC / Incident Response.
