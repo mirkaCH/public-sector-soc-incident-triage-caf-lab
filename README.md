@@ -228,3 +228,16 @@ It demonstrates practical investigation capability while also showing awareness 
 ## Disclaimer
 
 This is a simulated, scenario-based lab created for learning and portfolio purposes. No real organisation, user, IP address, or incident is represented.
+---
+
+## Project Updates After Community Feedback
+
+After receiving community feedback, this project was improved with:
+
+- Evidence-based initial assessment
+- Query output evidence from the simulated dataset
+- Validation steps
+- Containment and blast radius reduction actions
+- Clearer escalation reasoning for Tier 2 SOC / Incident Response
+
+These updates make the project closer to a real SOC investigation workflow and help show how feedback can be used to improve incident documentation.
