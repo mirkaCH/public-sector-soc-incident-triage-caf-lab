@@ -1,5 +1,3 @@
-
-
 # SOC Incident Report
 
 ## Improved Initial Assessment
@@ -11,6 +9,33 @@ At 09:18 UTC, a successful RDP logon occurred using the same account, same sourc
 At 09:21 UTC, `powershell.exe` was executed with an `EncodedCommand` parameter. This was followed by reconnaissance commands including `whoami /groups`, `net user`, and `ipconfig /all`.
 
 Based on the sequence of failed authentication attempts, successful privileged RDP access, special privileges, suspicious PowerShell execution, and discovery activity, this activity should be treated as a High Severity incident and escalated to Tier 2 SOC / Incident Response.
+
+## Validation Steps
+
+To validate whether this activity represents a true security incident, the following checks should be performed:
+
+1. Confirm that the failed logons, successful RDP logon, special privileges event, encoded PowerShell execution, and reconnaissance commands are linked to the same account, source IP, host, and timeline.
+2. Verify whether source IP `185.203.118.44` is expected or known for this environment.
+3. Confirm whether account `svc_admin_backup` should be used interactively through RDP.
+4. Check whether the RDP logon at `09:18 UTC` was approved or expected.
+5. Review whether the PowerShell command with `EncodedCommand` can be explained as legitimate administrative activity.
+6. Check for additional authentication attempts from the same source IP.
+7. Search for related activity from the same account across other hosts.
+8. Look for signs of lateral movement, persistence, or additional command execution.
+
+## Containment and Blast Radius Reduction
+
+If the activity is confirmed as suspicious or unauthorized, the following containment actions are recommended:
+
+1. Reset or temporarily disable the affected account `svc_admin_backup`.
+2. Revoke active sessions linked to the affected account.
+3. Isolate host `NBC-WIN-034` from the network if malicious activity is confirmed.
+4. Block source IP `185.203.118.44` at the firewall or relevant security control.
+5. Review authentication activity from the same source IP across the environment.
+6. Search for the same account activity on other hosts.
+7. Check for lateral movement indicators.
+8. Preserve relevant logs and evidence for Tier 2 SOC / Incident Response.
+9. Escalate the case to Tier 2 SOC / Incident Response for deeper investigation.
 
 ---
 
@@ -65,7 +90,9 @@ index=windows sourcetype=WinEventLog:Security EventCode=4688
 index=windows sourcetype=WinEventLog:Security host="NBC-WIN-034" Account_Name="svc_admin_backup"
 | table _time, EventCode, host, Account_Name, Source_Network_Address, New_Process_Name, Process_Command_Line
 | sort _time
-```---
+```
+
+---
 
 ## Query Output Evidence
 
