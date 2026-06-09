@@ -1,3 +1,19 @@
+
+
+# SOC Incident Report
+
+## Improved Initial Assessment
+
+Between 09:12 and 09:16 UTC, five failed logon attempts were observed against the privileged account `svc_admin_backup` from source IP `185.203.118.44` targeting host `NBC-WIN-034`.
+
+At 09:18 UTC, a successful RDP logon occurred using the same account, same source IP, and same host. At 09:19 UTC, special privileges were assigned to the session.
+
+At 09:21 UTC, `powershell.exe` was executed with an `EncodedCommand` parameter. This was followed by reconnaissance commands including `whoami /groups`, `net user`, and `ipconfig /all`.
+
+Based on the sequence of failed authentication attempts, successful privileged RDP access, special privileges, suspicious PowerShell execution, and discovery activity, this activity should be treated as a High Severity incident and escalated to Tier 2 SOC / Incident Response.
+
+---
+
 # Splunk SPL Queries
 
 ## Failed Logons Against Privileged Account
@@ -179,3 +195,6 @@ The evidence shows the following sequence:
 5. Reconnaissance commands after logon
 
 This sequence supports a High Severity decision and escalation to Tier 2 SOC / Incident Response.
+---## Failed
+
+
