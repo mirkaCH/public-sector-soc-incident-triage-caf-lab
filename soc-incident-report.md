@@ -222,6 +222,5 @@ The evidence shows the following sequence:
 5. Reconnaissance commands after logon
 
 This sequence supports a High Severity decision and escalation to Tier 2 SOC / Incident Response.
----## Failed
 
 
